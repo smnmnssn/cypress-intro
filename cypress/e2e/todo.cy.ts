@@ -3,6 +3,11 @@ describe("todo", () => {
     cy.task("reseed");
   });
 
+  it("should display title", () => {
+    cy.visit("http://localhost:3000");
+    cy.get('[data-testid="cypress-title"]').should("contain.text", "TODOS");
+  } )
+
   it("should display three todos by default", () => {
     cy.visit("http://localhost:3000");
     cy.get("li").should("have.length", 3);
