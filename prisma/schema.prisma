@@ -14,7 +14,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Todo {
+model User {
   id   String @id @default(auto()) @map("_id") @db.ObjectId
-  text String
+  email String
+  password String
+  createdAt DateTime @default(now())
 }
