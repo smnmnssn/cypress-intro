@@ -1,25 +1,30 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { db } from "@/prisma/db";
+import LogoutButton from "../components/LogoutButton";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
-  const authCookie = cookieStore.get("auth");
+  const userId = cookieStore.get("auth")?.value;
 
-  if (!authCookie) {
+  if (!userId) {
+    redirect("/login");
+  }
+
+  const user = await db.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
     redirect("/login");
   }
 
   return (
     <main className="p-6">
-      <h1 className="text-xl font-semibold mb-4">Välkommen, Test User!</h1>
-      <form action="/api/auth/logout" method="POST">
-        <button
-          data-cy="logout"
-          className="bg-red-600 text-white px-4 py-2 rounded"
-        >
-          Logga ut
-        </button>
-      </form>
+      <h1 className="text-xl font-semibold mb-4">
+        Välkommen, {user.email === "testuser@example.com" ? "Test User" : user.email}!
+      </h1>
+      <LogoutButton />
     </main>
   );
 }

@@ -29,6 +29,7 @@ export default function LoginForm() {
         setError(data.message || "Fel vid inloggning");
       }
     } catch (err) {
+      console.error(err);
       setError("Något gick fel vid inloggning.");
     }
   }
