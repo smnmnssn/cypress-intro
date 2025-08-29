@@ -8,11 +8,9 @@ describe("Registrering, login och logout", () => {
     const userInfo = {
       email: "testuser@example.com",
       password: "s3cret",
-      name: "Test User",
     };
 
     cy.visit("/register");
-    cy.get("input[name=name]").type(userInfo.name);
     cy.get("input[name=email]").type(userInfo.email);
     cy.get("input[name=password]").type(userInfo.password);
     cy.get("input[name=confirmPassword]").type(userInfo.password);
