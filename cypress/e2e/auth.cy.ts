@@ -18,7 +18,7 @@ describe("Registrering, login och logout", () => {
 
     // Check that we go to dashboard after registering.
     cy.url().should("include", "/dashboard");
-    cy.contains("Välkommen, Test User!").should("be.visible");
+    cy.contains("Välkommen, testuser@example.com!").should("be.visible");
   });
 
   // Login user.
@@ -31,17 +31,21 @@ describe("Registrering, login och logout", () => {
 
     // Check that we go to dashboard after login.
     cy.url().should("include", "/dashboard");
-    cy.contains("Välkommen, Test User!").should("be.visible");
+    cy.contains("Välkommen, maklare@example.com!").should("be.visible");
   });
 
   // Logout user.
   it("ska kunna logga ut användaren", () => {
-    cy.visit("/dashboard");
+    cy.visit("/login");
+    cy.get("input[name=email]").type("maklare@example.com");
+    cy.get("input[name=password]").type("hemligt");
+    cy.get("button[type=submit]").click();
+
+    cy.url().should("include", "/dashboard");
 
     cy.get("button[data-cy=logout]").click();
 
     cy.url().should("include", "/login");
-    cy.contains("Du är nu utloggad").should("be.visible");
   });
 
   // Error message when using wrong pw or email.

@@ -63,6 +63,7 @@ export default function RegisterForm() {
       {error && <p className="text-red-600">{error}</p>}
 
       <input
+      name="email"
         type="email"
         placeholder="E-post"
         value={email}
@@ -72,6 +73,7 @@ export default function RegisterForm() {
       />
 
       <input
+      name="password"
         type="password"
         placeholder="Lösenord"
         value={password}
@@ -81,6 +83,7 @@ export default function RegisterForm() {
       />
 
       <input
+      name="confirmPassword"
         type="password"
         placeholder="Bekräfta lösenord"
         value={confirmPassword}

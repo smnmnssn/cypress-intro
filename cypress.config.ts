@@ -1,19 +1,29 @@
 import { defineConfig } from "cypress";
 import { db } from "./prisma/db";
-import { seedTodos } from "./prisma/seed/todo";
+import bcrypt from "bcrypt";
 
 export default defineConfig({
   e2e: {
+    baseUrl: "http://localhost:3000",
     setupNodeEvents(on, config) {
-      // implement node event listeners here
       on("task", {
         async reseed() {
-          await db.todo.deleteMany();
-          await seedTodos();
+          await db.user.deleteMany();
+
+          // skapa en test-user som Cypress kan använda vid login
+          const hashedPassword = await bcrypt.hash("hemligt", 10);
+          await db.user.create({
+            data: {
+              email: "maklare@example.com",
+              password: hashedPassword,
+            },
+          });
 
           return null;
         },
       });
+
+      return config;
     },
   },
 });
