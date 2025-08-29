@@ -36,6 +36,7 @@ describe("Registrering, login och logout", () => {
     cy.contains("Välkommen, Test User!").should("be.visible");
   });
 
+  // Logout user.
   it("ska kunna logga ut användaren", () => {
     cy.visit("/dashboard");
 
