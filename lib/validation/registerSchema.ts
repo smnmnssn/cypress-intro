@@ -11,4 +11,10 @@ export const registerSchema = z
     path: ["confirmPassword"],
   });
 
+export const clientSchema = z.object({
+  name: z.string().min(1, { message: "Namn är obligatoriskt." }),
+  email: z.string().email({ message: "Ogiltig e-postadress." }),
+  // address: z.string().min(1, { message: "Adress är obligatorisk." }),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
