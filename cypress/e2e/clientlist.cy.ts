@@ -24,7 +24,7 @@ it("ska kunna skapa ny kund", () => {
   cy.contains("Test User").should("exist");
 });
 
-// Display error if fields are missing or wrong input
+// Display error message if invalid or empty input
 it("ska visa valideringsfel om uppgifter saknas", () => {
   cy.visit("/clients");
   cy.get("#create-new-button").click();
