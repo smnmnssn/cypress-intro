@@ -10,7 +10,6 @@ export default defineConfig({
         async reseed() {
           await db.user.deleteMany();
 
-          // skapa en test-user som Cypress kan använda vid login
           const hashedPassword = await bcrypt.hash("hemligt", 10);
           await db.user.create({
             data: {
