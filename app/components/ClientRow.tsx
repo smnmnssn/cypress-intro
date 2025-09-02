@@ -89,12 +89,11 @@ export default function ClientRow({ client, onUpdate }: ClientRowProps) {
 
   return (
     <li>
-      <span>{client.name}</span>
-      <span>{client.email}</span>
-      <span>{client.address}</span>
+      <span>{client.name}</span> - <span>{client.email}</span> {client.address ? "-" : ""} <span>{client.address}</span>
       <button
         classname="edit-button ml-2 border px-2 py-1"
         onClick={() => setIsEditing(true)}
+        id="edit-button"
       >
         Redigera
       </button>

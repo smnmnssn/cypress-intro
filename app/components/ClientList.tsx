@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import ClientForm, { ClientCreateInput } from "./ClientForm";
+import ClientRow  from "./ClientRow";
 
 export type Client = {
   id: string;
@@ -42,6 +43,11 @@ export default function ClientList() {
     setIsCreateOpen(false);
   }
 
+  function handleUpdate(updated: Client) {
+    setClients((prev) =>
+    prev.map((c) => (c.id === updated.id ? updated : c)))
+  }
+
 
   return (
     <div>
@@ -57,11 +63,11 @@ export default function ClientList() {
 
         <ol id="client-list" className="mt-4">
         {clients.map((client) => (
-          <li key={client.id}>
-            <span>{client.name}</span>
-            <button className="edit-button ml-2 border px-2 py-1">Redigera</button>
-            <button className="delete-button ml-2 border px-2 py-1">Radera</button>
-          </li>
+          <ClientRow
+          key={client.id}
+          client={client}
+          onUpdate={handleUpdate}
+          />
         ))}
       </ol>
 

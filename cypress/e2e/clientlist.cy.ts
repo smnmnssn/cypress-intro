@@ -40,7 +40,7 @@ it("ska visa valideringsfel om uppgifter saknas", () => {
 // Edit existing client
 it("ska kunna redigera kund", () => {
   cy.visit("/clients");
-  cy.contains("Test User").parent().find(".edit-button").click();
+  cy.contains("Test User").parent().find("#edit-button").click();
   cy.get("input[name=name]").clear().type("Johan Johansson");
   cy.get("input[name=email]").clear().type("Johan@test.se");
   cy.get("input[name=address]").type("Test street nr 42");
