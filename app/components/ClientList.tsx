@@ -5,6 +5,7 @@ import Modal from "./Modal";
 import ClientForm, { ClientCreateInput } from "./ClientForm";
 import ClientRow  from "./ClientRow";
 
+
 export type Client = {
   id: string;
   name: string;
@@ -47,6 +48,10 @@ export default function ClientList() {
     setClients((prev) =>
     prev.map((c) => (c.id === updated.id ? updated : c)))
   }
+  
+  function handleDelete(id: string) {
+    setClients((prev) => prev.filter((cc) => cc.id !== id));
+  }
 
 
   return (
@@ -67,6 +72,7 @@ export default function ClientList() {
           key={client.id}
           client={client}
           onUpdate={handleUpdate}
+          onDelete={handleDelete}
           />
         ))}
       </ol>
