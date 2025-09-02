@@ -1,8 +1,8 @@
 "use client";
 
-import { clientSchema } from "@/lib/validation/schemas";
 import { useState } from "react";
 import { z } from "zod";
+import { clientSchema } from "@/lib/validation/schemas";
 
 export type ClientCreateInput = z.infer<typeof clientSchema>;
 
@@ -21,6 +21,7 @@ export default function ClientForm({
 }: ClientFormProps) {
   const [name, setName] = useState(initial.name ?? "");
   const [email, setEmail] = useState(initial.email ?? "");
+  const [address, setAddress] = useState(initial.address ?? "");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -29,18 +30,16 @@ export default function ClientForm({
     setError(null);
 
     try {
-      // Validera med Zod
-      const data = clientSchema.parse({ name, email });
+      const data = clientSchema.parse({ name, email, address });
 
       setPending(true);
       await onSubmit(data);
 
-      // ev. rensa fälten efter lyckad submit
       setName("");
       setEmail("");
+      setAddress("");
     } catch (err) {
       if (err instanceof z.ZodError) {
-        // Visa första valideringsfelet
         setError(err.issues[0].message);
         return;
       }
@@ -68,6 +67,15 @@ export default function ClientForm({
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="border p-2 w-full"
+          />
+        </label>
+        <label>
+          Adress
+          <input
+            name="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
             className="border p-2 w-full"
           />
         </label>

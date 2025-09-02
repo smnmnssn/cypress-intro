@@ -10,7 +10,7 @@ it("ska visa kundlistan", () => {
   cy.get('[data-cy="clients-title"]').should("contain.text", "Kunder");
   cy.get("#client-list").should("exist");
   cy.get("#client-list").children().should("have.length.greaterThan", 0);
-  cy.contains("Anna Andersson").should("exist");
+  cy.contains("Test User").should("exist");
   cy.get("#create-new-button").should("exist");
 });
 
@@ -30,6 +30,7 @@ it("ska kunna skapa ny kund", () => {
 it("ska visa valideringsfel om uppgifter saknas", () => {
   cy.visit("/clients");
   cy.get("#create-new-button").click();
+  cy.get("input[name=name]").type("Johan");
   cy.get("input[name=email]").type("inte_en_giltig_email");
   cy.get("button[type=submit]").click();
   cy.contains("Ogiltig e-postadress").should("be.visible");
@@ -38,7 +39,7 @@ it("ska visa valideringsfel om uppgifter saknas", () => {
 // Edit existing client
 it("ska kunna redigera kund", () => {
   cy.visit("/clients");
-  cy.contains("Anna Andersson").parent().find(".edit-button").click();
+  cy.contains("Test User").parent().find(".edit-button").click();
   cy.get("input[name=name]").clear().type("Johan Johansson");
   cy.get("input[name=email]").clear().type("Johan@test.se");
   cy.get("button[type=submit]").click();
