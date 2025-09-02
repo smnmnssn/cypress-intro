@@ -56,6 +56,6 @@ it("ska kunna radera kund", () => {
   cy.get("input[name=email]").type("johan@test.se");
   cy.get("input[name=address]").type("Test Gatan 1");
   cy.get("button[type=submit]").click();
-  cy.contains("Johan Johansson").parent().find(".delete-button").click();
+  cy.contains("Johan Johansson").parent().find("#delete-button").click();
   cy.contains("Johan Johansson").should("not.exist");
 });
