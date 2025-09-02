@@ -10,7 +10,7 @@ type ClientRowProps = {
   onDelete?: (id: string) => void;
 };
 
-export default function ClientRow({ client, onUpdate }: ClientRowProps) {
+export default function ClientRow({ client, onUpdate, onDelete }: ClientRowProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(client.name);
   const [email, setEmail] = useState(client.email);
@@ -51,6 +51,30 @@ export default function ClientRow({ client, onUpdate }: ClientRowProps) {
       }
 
       setError("Något gick fel vid uppdatering");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function handleDelete() {
+    setError(null);
+    setPending(true);
+
+    try {
+      const res = await fetch(`/api/clients/${client.id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Delete failed");
+      }
+
+      if (onDelete) {
+        onDelete(client.id);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Något gick fel vid radering");
     } finally {
       setPending(false);
     }
@@ -97,7 +121,8 @@ export default function ClientRow({ client, onUpdate }: ClientRowProps) {
       >
         Redigera
       </button>
-      <button id="delete-button" className="delete-button ml-2 border px-2 py-1">Radera</button>
+      <button onClick={handleDelete} disabled={pending} id="delete-button" className="delete-button ml-2 border px-2 py-1">{pending ? "Raderar..." : "Radera"}</button>
+      {error && <p className="text-red-600">{error}</p>}
     </li>
   );
 }
