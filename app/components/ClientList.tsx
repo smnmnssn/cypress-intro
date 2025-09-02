@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import ClientForm, { ClientCreateInput } from "./ClientForm";
 
-type Client = {
+export type Client = {
   id: string;
   name: string;
   email: string;
-  address?: string;
+  address: string;
 }
 
 export default function ClientList() {

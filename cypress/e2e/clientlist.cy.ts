@@ -26,12 +26,13 @@ it("ska kunna skapa ny kund", () => {
   cy.contains("Test User").should("exist");
 });
 
-// Display error if fields are missing
+// Display error if fields are missing or wrong input
 it("ska visa valideringsfel om uppgifter saknas", () => {
   cy.visit("/clients");
   cy.get("#create-new-button").click();
   cy.get("input[name=name]").type("Johan");
   cy.get("input[name=email]").type("inte_en_giltig_email");
+  cy.get("input[name=address]").type("Test street nr 42");
   cy.get("button[type=submit]").click();
   cy.contains("Ogiltig e-postadress").should("be.visible");
 });
@@ -42,6 +43,7 @@ it("ska kunna redigera kund", () => {
   cy.contains("Test User").parent().find(".edit-button").click();
   cy.get("input[name=name]").clear().type("Johan Johansson");
   cy.get("input[name=email]").clear().type("Johan@test.se");
+  cy.get("input[name=address]").type("Test street nr 42");
   cy.get("button[type=submit]").click();
   cy.contains("Johan Johansson").should("exist");
 });

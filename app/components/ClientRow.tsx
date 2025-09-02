@@ -1,0 +1,104 @@
+import { clientSchema } from "@/lib/validation/schemas";
+import { useState } from "react";
+import { z } from "zod";
+import type { ClientCreateInput } from "./ClientForm";
+import type { Client } from "./ClientList";
+
+type ClientRowProps = {
+  client: Client;
+  onUpdate: (updated: Client) => void;
+  onDelete?: (id: string) => void;
+};
+
+export default function ClientRow({ client, onUpdate }: ClientRowProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState(client.name);
+  const [email, setEmail] = useState(client.email);
+  const [address, setAddress] = useState(client.address);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+
+    try {
+      const parsed: ClientCreateInput = clientSchema.parse({
+        name,
+        email,
+        address,
+      });
+
+      setPending(true);
+
+      const res = await fetch(`/api/clients/${client.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(parsed),
+      });
+
+      if (!res.ok) {
+        throw new Error("Update failed");
+      }
+
+      const updated: Client = await res.json();
+      onUpdate(updated);
+      setIsEditing(false);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setError(err.issues[0].message);
+        return;
+      }
+
+      setError("Något gick fel vid uppdatering");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  if (isEditing) {
+    return (
+      <li>
+        <form onSubmit={handleSave}>
+          <input
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            name="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          {error && <p classname="text-red-600">{error}</p>}
+          <button type="submit" disabled={pending}>
+            {pending ? "Sparar..." : "Spara"}
+          </button>
+          <button type="button" onClick={() => setIsEditing(false)}>
+            Avbryt
+          </button>
+        </form>
+      </li>
+    );
+  }
+
+  return (
+    <li>
+      <span>{client.name}</span>
+      <span>{client.email}</span>
+      <span>{client.address}</span>
+      <button
+        classname="edit-button ml-2 border px-2 py-1"
+        onClick={() => setIsEditing(true)}
+      >
+        Redigera
+      </button>
+      <button classname="delete-button ml-2 border px-2 py-1">Radera</button>
+    </li>
+  );
+}
