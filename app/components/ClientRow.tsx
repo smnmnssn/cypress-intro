@@ -75,7 +75,7 @@ export default function ClientRow({ client, onUpdate }: ClientRowProps) {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />
-          {error && <p classname="text-red-600">{error}</p>}
+          {error && <p className="text-red-600">{error}</p>}
           <button type="submit" disabled={pending}>
             {pending ? "Sparar..." : "Spara"}
           </button>
@@ -91,13 +91,13 @@ export default function ClientRow({ client, onUpdate }: ClientRowProps) {
     <li>
       <span>{client.name}</span> - <span>{client.email}</span> {client.address ? "-" : ""} <span>{client.address}</span>
       <button
-        classname="edit-button ml-2 border px-2 py-1"
+        className="edit-button ml-2 border px-2 py-1"
         onClick={() => setIsEditing(true)}
         id="edit-button"
       >
         Redigera
       </button>
-      <button classname="delete-button ml-2 border px-2 py-1">Radera</button>
+      <button id="delete-button" className="delete-button ml-2 border px-2 py-1">Radera</button>
     </li>
   );
 }
