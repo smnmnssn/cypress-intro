@@ -1,5 +1,5 @@
 // app/api/clients/route.ts
-import { clientSchema } from "@/lib/validation/registerSchema";
+import { clientSchema } from "@/lib/validation/schemas";
 import { db } from "@/prisma/db";
 import { NextRequest, NextResponse } from "next/server";
 

@@ -29,6 +29,7 @@ it("ska kunna skapa ny kund", () => {
 // Display error if fields are missing
 it("ska visa valideringsfel om uppgifter saknas", () => {
   cy.visit("/clients");
+  cy.get("#create-new-button").click();
   cy.get("input[name=email]").type("inte_en_giltig_email");
   cy.get("button[type=submit]").click();
   cy.contains("Ogiltig e-postadress").should("be.visible");
