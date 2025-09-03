@@ -28,13 +28,13 @@ export default defineConfig({
                 address: "Testvägen 1",
                 price: 4900000,
                 status: "Såld",
-                userId: user.id,
+                //userId: user.id,
               },
               {
                 address: "Testvägen 2",
                 price: 5900000,
                 status: "Ej såld",
-                userId: user.id,
+                //userId: user.id,
               },
             ],
           });
