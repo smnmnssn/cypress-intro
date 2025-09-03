@@ -8,36 +8,25 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       on("task", {
         async reseed() {
-          // Rensa databasen
-          await db.property.deleteMany();
           await db.user.deleteMany();
+          await db.property.deleteMany();
 
-          // Skapa användare
           const hashedPassword = await bcrypt.hash("hemligt", 10);
-          const user = await db.user.create({
+          await db.user.create({
             data: {
               email: "maklare@example.com",
               password: hashedPassword,
             },
           });
 
-          // Skapa test-fastigheter
-          await db.property.createMany({
-            data: [
-              {
-                address: "Testvägen 1",
-                price: 4900000,
-                status: "Såld",
-                //userId: user.id,
-              },
-              {
-                address: "Testvägen 2",
-                price: 5900000,
-                status: "Ej såld",
-                //userId: user.id,
-              },
-            ],
+          await db.property.create({
+            data: {
+              address: "Testgatan 1",
+              price: 2500000,
+              status: "Till salu",
+            },
           });
+
           return null;
         },
       });
