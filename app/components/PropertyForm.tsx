@@ -1,8 +1,8 @@
 "use client";
 
-import { propertySchema } from "@/lib/validation/schemas";
 import { useState } from "react";
 import { z } from "zod";
+import { propertySchema } from "@/lib/validation/schemas";
 
 export type PropertyCreateInput = z.infer<typeof propertySchema>;
 
@@ -32,16 +32,18 @@ export default function PropertyForm({
     try {
       const data = propertySchema.parse({
         address,
-        price: Number(price),
+        price,
         status,
       });
 
       setPending(true);
       await onSubmit(data);
 
-      setAddress("");
-      setPrice("");
-      setStatus("");
+      if (!initial.address) {
+        setAddress("");
+        setPrice("");
+        setStatus("");
+      }
     } catch (err) {
       if (err instanceof z.ZodError) {
         setErrors(err.issues.map((issue) => issue.message));
@@ -59,32 +61,29 @@ export default function PropertyForm({
         <label>
           Adress
           <input
-            name="address"
+            data-cy="input-adress"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="border p-2 w-full"
-            data-cy="input-adress"
           />
         </label>
         <label>
           Pris
           <input
-            name="price"
-            type="text"
+            data-cy="input-pris"
+            type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             className="border p-2 w-full"
-            data-cy="input-pris"
           />
         </label>
         <label>
           Status
           <input
-            name="status"
+            data-cy="input-status"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
             className="border p-2 w-full"
-            data-cy="input-status"
           />
         </label>
 
@@ -100,10 +99,10 @@ export default function PropertyForm({
 
         <div className="flex gap-2 mt-2">
           <button
+            data-cy="submit-button"
             type="submit"
             disabled={pending}
             className="border px-3 py-2"
-            data-cy="submit-button"
           >
             {pending ? "Sparar..." : "Spara"}
           </button>

@@ -1,36 +1,28 @@
 "use client";
 
+import { loginUser } from "@/app/login/actions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginForm() {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    setError("");
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (res.ok) {
-        router.push("/dashboard");
-      } else {
-        const data = await res.json();
-        setError(data.message || "Fel vid inloggning");
-      }
+      await loginUser(email, password);
+      router.push("/dashboard");
     } catch (err) {
-      console.error(err);
-      setError("Något gick fel vid inloggning.");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Okänt fel inträffade");
+      }
     }
   }
 
@@ -38,7 +30,7 @@ export default function LoginForm() {
     <form onSubmit={handleLogin} className="space-y-4">
       <input
         type="email"
-        name="email"
+        data-cy="email-input"
         placeholder="E-post"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -48,7 +40,7 @@ export default function LoginForm() {
 
       <input
         type="password"
-        name="password"
+        data-cy="password-input"
         placeholder="Lösenord"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -60,6 +52,7 @@ export default function LoginForm() {
 
       <button
         type="submit"
+        data-cy="submit-button"
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
       >
         Logga in

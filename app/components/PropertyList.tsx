@@ -1,8 +1,14 @@
 "use client";
+
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import PropertyRow from "../components/PropertyRow";
-import Modal from "./Modal";
 import PropertyForm, { PropertyCreateInput } from "./PropertyForm";
+import PropertyRow from "./PropertyRow";
+import Modal from "./Modal";
+import {
+  getProperties,
+  createProperty,
+} from "@/app/properties/actions";
 
 export type Property = {
   id: string;
@@ -17,29 +23,25 @@ export default function PropertyList() {
 
   useEffect(() => {
     async function loadProperties() {
-      const res = await fetch("/api/properties");
-      if (res.ok) {
-        const data: Property[] = await res.json();
+      try {
+        const data = await getProperties();
         setProperties(data);
+      } catch (error) {
+        console.error("Kunde inte hämta fastigheter:", error);
       }
     }
     loadProperties();
   }, []);
 
   async function handleCreate(payload: PropertyCreateInput) {
-    const res = await fetch("/api/properties", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      throw new Error("Create failed");
+    try {
+      const created = await createProperty(payload);
+      setProperties((prev) => [created, ...prev]);
+      setIsCreateOpen(false);
+    } catch (error) {
+      console.error("Kunde inte skapa fastighet:", error);
+      throw error;
     }
-
-    const created: Property = await res.json();
-    setProperties((prev) => [created, ...prev]);
-    setIsCreateOpen(false);
   }
 
   function handleUpdate(updated: Property) {
@@ -54,18 +56,19 @@ export default function PropertyList() {
 
   return (
     <div>
-      <h1 data-cy="property-title">Fastigheter</h1>
+      <h1 data-cy="property-title" className="text-6xl">
+        Fastigheter
+      </h1>
 
-      <button
-        id="create-new-button"
-        onClick={() => setIsCreateOpen(true)}
-        className="border px-3 py-2"
+      <Button
         data-cy="create-new-button"
+        onClick={() => setIsCreateOpen(true)}
+        className="border px-3 py-2 mt-5 font-bold bg-blue-600"
       >
-        Skapa ny
-      </button>
+        + Skapa ny fastighet
+      </Button>
 
-      <ol id="property-list" className="mt-4" data-cy="property-list">
+      <ol data-cy="property-list" className="mt-4 mb-5 font-bold">
         {properties.map((property) => (
           <PropertyRow
             key={property.id}

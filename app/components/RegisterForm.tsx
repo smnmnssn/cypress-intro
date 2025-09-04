@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { registerUser } from "@/app/login/actions";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { z } from "zod";
 
-const registerSchema = z.object({
-  email: z.string().email({ message: "Ogiltig e-postadress" }),
-  password: z.string().min(6, { message: "Minst 6 tecken" }),
-  confirmPassword: z.string().min(6),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Lösenorden matchar inte",
-  path: ["confirmPassword"],
-});
+const registerSchema = z
+  .object({
+    email: z.string().email({ message: "Ogiltig e-postadress" }),
+    password: z.string().min(6, { message: "Minst 6 tecken" }),
+    confirmPassword: z.string().min(6),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Lösenorden matchar inte",
+    path: ["confirmPassword"],
+  });
 
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -20,7 +23,7 @@ export default function RegisterForm() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleRegister = async (e: React.FormEvent) => {
+  async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
@@ -31,30 +34,24 @@ export default function RegisterForm() {
       const fieldErrors = result.error.flatten().fieldErrors;
       setError(
         fieldErrors.email?.[0] ||
-        fieldErrors.password?.[0] ||
-        fieldErrors.confirmPassword?.[0] ||
-        "Felaktig inmatning"
+          fieldErrors.password?.[0] ||
+          fieldErrors.confirmPassword?.[0] ||
+          "Felaktig inmatning"
       );
       return;
     }
 
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (res.ok) {
-        router.push("/dashboard");
+      await registerUser(email, password);
+      router.push("/dashboard");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
       } else {
-        const data = await res.json();
-        setError(data.message || "Registreringen misslyckades");
+        setError("Okänt fel inträffade");
       }
-    } catch {
-      setError("Serverfel. Försök igen senare.");
     }
-  };
+  }
 
   return (
     <form onSubmit={handleRegister} className="max-w-md mx-auto p-4 space-y-4">
@@ -63,8 +60,8 @@ export default function RegisterForm() {
       {error && <p className="text-red-600">{error}</p>}
 
       <input
-      name="email"
         type="email"
+        data-cy="email-input"
         placeholder="E-post"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -73,8 +70,8 @@ export default function RegisterForm() {
       />
 
       <input
-      name="password"
         type="password"
+        data-cy="password-input"
         placeholder="Lösenord"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -83,8 +80,8 @@ export default function RegisterForm() {
       />
 
       <input
-      name="confirmPassword"
         type="password"
+        data-cy="confirm-password-input"
         placeholder="Bekräfta lösenord"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -94,8 +91,8 @@ export default function RegisterForm() {
 
       <button
         type="submit"
+        data-cy="submit-button"
         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        data-cy="register-submit"
       >
         Registrera
       </button>

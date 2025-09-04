@@ -3,6 +3,7 @@ import { useState } from "react";
 import { z } from "zod";
 import type { ClientCreateInput } from "./ClientForm";
 import type { Client } from "./ClientList";
+import { updateClient, deleteClient } from "@/app/clients/actions"; 
 
 type ClientRowProps = {
   client: Client;
@@ -31,17 +32,8 @@ export default function ClientRow({ client, onUpdate, onDelete }: ClientRowProps
 
       setPending(true);
 
-      const res = await fetch(`/api/clients/${client.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed),
-      });
+      const updated = await updateClient(client.id, parsed);
 
-      if (!res.ok) {
-        throw new Error("Update failed");
-      }
-
-      const updated: Client = await res.json();
       onUpdate(updated);
       setIsEditing(false);
     } catch (err) {
@@ -49,7 +41,6 @@ export default function ClientRow({ client, onUpdate, onDelete }: ClientRowProps
         setError(err.issues[0].message);
         return;
       }
-
       setError("Något gick fel vid uppdatering");
     } finally {
       setPending(false);
@@ -61,13 +52,7 @@ export default function ClientRow({ client, onUpdate, onDelete }: ClientRowProps
     setPending(true);
 
     try {
-      const res = await fetch(`/api/clients/${client.id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        throw new Error("Delete failed");
-      }
+      await deleteClient(client.id);
 
       if (onDelete) {
         onDelete(client.id);
@@ -113,7 +98,8 @@ export default function ClientRow({ client, onUpdate, onDelete }: ClientRowProps
 
   return (
     <li>
-      <span>{client.name}</span> - <span>{client.email}</span> {client.address ? "-" : ""} <span>{client.address}</span>
+      <span>{client.name}</span> - <span>{client.email}</span>{" "}
+      {client.address ? "-" : ""} <span>{client.address}</span>
       <button
         className="edit-button ml-2 border px-2 py-1"
         onClick={() => setIsEditing(true)}
@@ -121,7 +107,14 @@ export default function ClientRow({ client, onUpdate, onDelete }: ClientRowProps
       >
         Redigera
       </button>
-      <button onClick={handleDelete} disabled={pending} id="delete-button" className="delete-button ml-2 border px-2 py-1">{pending ? "Raderar..." : "Radera"}</button>
+      <button
+        onClick={handleDelete}
+        disabled={pending}
+        id="delete-button"
+        className="delete-button ml-2 border px-2 py-1"
+      >
+        {pending ? "Raderar..." : "Radera"}
+      </button>
       {error && <p className="text-red-600">{error}</p>}
     </li>
   );

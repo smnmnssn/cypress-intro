@@ -1,3 +1,4 @@
+import { deleteProperty, updateProperty } from "@/app/properties/actions";
 import { propertySchema } from "@/lib/validation/schemas";
 import { useState } from "react";
 import { z } from "zod";
@@ -35,17 +36,8 @@ export default function PropertyRow({
 
       setPending(true);
 
-      const res = await fetch(`/api/properties/${property.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed),
-      });
+      const updated = await updateProperty(property.id, parsed);
 
-      if (!res.ok) {
-        throw new Error("Update failed");
-      }
-
-      const updated: Property = await res.json();
       onUpdate(updated);
       setIsEditing(false);
     } catch (err) {
@@ -53,7 +45,6 @@ export default function PropertyRow({
         setError(err.issues[0].message);
         return;
       }
-
       setError("Något gick fel vid uppdatering");
     } finally {
       setPending(false);
@@ -65,13 +56,7 @@ export default function PropertyRow({
     setPending(true);
 
     try {
-      const res = await fetch(`/api/properties/${property.id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) {
-        throw new Error("Delete failed");
-      }
+      await deleteProperty(property.id);
 
       if (onDelete) {
         onDelete(property.id);
@@ -86,41 +71,29 @@ export default function PropertyRow({
 
   if (isEditing) {
     return (
-      <li data-cy="property-item">
+      <li>
         <form onSubmit={handleSave}>
           <input
-            name="address"
+            data-cy="input-adress"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            data-cy="input-adress"
           />
           <input
-            name="price"
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
             data-cy="input-pris"
+            value={price}
+            type="number"
+            onChange={(e) => setPrice(e.target.value)}
           />
           <input
-            name="status"
+            data-cy="input-status"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            data-cy="input-status"
           />
           {error && <p className="text-red-600">{error}</p>}
-          <button
-            type="submit"
-            disabled={pending}
-            data-cy="submit-button"
-            className="ml-2 border px-2 py-1"
-          >
+          <button data-cy="submit-button" type="submit" disabled={pending}>
             {pending ? "Sparar..." : "Spara"}
           </button>
-          <button
-            type="button"
-            onClick={() => setIsEditing(false)}
-            className="ml-2 border px-2 py-1"
-          >
+          <button type="button" onClick={() => setIsEditing(false)}>
             Avbryt
           </button>
         </form>
@@ -130,13 +103,12 @@ export default function PropertyRow({
 
   return (
     <li data-cy="property-item">
-      <span>{property.address}</span> -{" "}
-      <span>{property.price.toLocaleString("sv-SE")} kr</span> -{" "}
-      <span>{property.status}</span>
+      <span data-cy="input-adress">{property.address}</span>
+      <span data-cy="input-pris">{property.price} kr - </span>
+      <span data-cy="input-status">{property.status}</span>
       <button
         className="edit-button ml-2 border px-2 py-1"
         onClick={() => setIsEditing(true)}
-        id="edit-button"
         data-cy="edit-button"
       >
         Redigera
@@ -144,7 +116,6 @@ export default function PropertyRow({
       <button
         onClick={handleDelete}
         disabled={pending}
-        id="delete-button"
         data-cy="delete-button"
         className="delete-button ml-2 border px-2 py-1"
       >

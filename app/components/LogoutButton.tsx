@@ -1,12 +1,15 @@
 "use client";
 
+import { logoutUser } from "@/app/login/actions";
+
 export default function LogoutButton() {
   async function handleLogout() {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-    });
-
-    window.location.href = "/login"; 
+    try {
+      await logoutUser();
+      window.location.href = "/login";
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
