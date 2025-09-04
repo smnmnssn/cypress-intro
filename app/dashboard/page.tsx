@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { db } from "@/prisma/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -10,7 +9,7 @@ export default async function DashboardPage() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("auth")?.value;
 
-  /*if (!userId) {
+ /*  if (!userId) {
     redirect("/login");
   }
 
@@ -24,8 +23,8 @@ export default async function DashboardPage() {
 
   return (
     <main className="p-6">
-      <h1 className="text-6xl font-semibold mb-4">Välkommen, !</h1>
-      <LogoutButton />
+{/*       <h1 className="text-6xl font-semibold mb-4">Välkommen, {user.email}!</h1>
+ */}      <LogoutButton />
       <ClientList />
       <PropertyList />
     </main>
