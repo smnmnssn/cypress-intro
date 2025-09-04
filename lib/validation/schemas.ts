@@ -29,8 +29,9 @@ export const clientSchema = z.object({
 
 export const propertySchema = z.object({
   address: z.string().min(1, { message: "Adress är obligatoriskt" }),
-  price: z.number().min(1, { message: "Pris är obligatoriskt" }),
+  price: z.coerce.number().min(1, { message: "Pris är obligatoriskt" }),
   status: z.string().min(1, { message: "Status är obligatoriskt" }),
 });
+
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
