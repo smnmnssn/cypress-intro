@@ -1,17 +1,17 @@
 // components/clients/ClientList.tsx
 "use client";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import Modal from "./Modal";
 import ClientForm, { ClientCreateInput } from "./ClientForm";
-import ClientRow  from "./ClientRow";
-
+import ClientRow from "./ClientRow";
+import Modal from "./Modal";
 
 export type Client = {
   id: string;
   name: string;
   email: string;
   address: string;
-}
+};
 
 export default function ClientList() {
   const [clients, setClients] = useState<Client[]>([]);
@@ -19,7 +19,7 @@ export default function ClientList() {
 
   useEffect(() => {
     async function loadClients() {
-      const res = await fetch ("/api/clients");
+      const res = await fetch("/api/clients");
       if (res.ok) {
         const data: Client[] = await res.json();
         setClients(data);
@@ -45,34 +45,33 @@ export default function ClientList() {
   }
 
   function handleUpdate(updated: Client) {
-    setClients((prev) =>
-    prev.map((c) => (c.id === updated.id ? updated : c)))
+    setClients((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
   }
-  
+
   function handleDelete(id: string) {
     setClients((prev) => prev.filter((cc) => cc.id !== id));
   }
 
-
   return (
     <div>
-      <h1 data-cy="clients-title">Kunder</h1>
+      <h1 data-cy="clients-title" className="text-6xl">
+        Kunder
+      </h1>
 
-      <button
-        id="create-new-button"
-        onClick={() => setIsCreateOpen(true)}
-        className="border px-3 py-2"
-      >
-        Skapa ny
-      </button>
-
-        <ol id="client-list" className="mt-4">
+      <Button 
+          id="create-new-button"
+          onClick={() => setIsCreateOpen(true)}
+          className="border px-3 py-2 mt-5 font-bold bg-green-600"
+        >
+          + Skapa ny
+      </Button>
+      <ol id="client-list" className="mt-4 mb-5 font-bold">
         {clients.map((client) => (
           <ClientRow
-          key={client.id}
-          client={client}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
+            key={client.id}
+            client={client}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
           />
         ))}
       </ol>
@@ -89,4 +88,4 @@ export default function ClientList() {
       </Modal>
     </div>
   );
-};
+}

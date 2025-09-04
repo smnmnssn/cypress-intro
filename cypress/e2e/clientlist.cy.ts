@@ -39,20 +39,20 @@ it("ska visa valideringsfel om uppgifter saknas", () => {
 it("ska kunna redigera kund", () => {
   cy.visit("/clients");
   cy.contains("Test User").parent().find("#edit-button").click();
-  cy.get("input[name=name]").clear().type("Johan Johansson");
-  cy.get("input[name=email]").clear().type("Johan@test.se");
+  cy.get("input[name=name]").clear().type("Anders Andersson");
+  cy.get("input[name=email]").clear().type("Anders@test.se");
   cy.get("input[name=address]").type("Test street nr 42");
   cy.get("button[type=submit]").click();
-  cy.contains("Johan Johansson").should("exist");
+  cy.contains("Anders Andersson").should("exist");
 });
 
 // Delete existing client
 it("ska kunna radera kund", () => {
   cy.visit("/clients");
   cy.get("#create-new-button").click();
-  cy.get("input[name=name]").type("Johan Johansson");
-  cy.get("input[name=email]").type("johan@test.se");
-  cy.get("input[name=address]").type("Test Gatan 1");
+  cy.get("input[name=name]").clear().type("Johan Johansson");
+  cy.get("input[name=email]").clear().type("johan@test.se");
+  cy.get("input[name=address]").clear().type("Test Gatan 1");
   cy.get("button[type=submit]").click();
   cy.contains("Johan Johansson").parent().find("#delete-button").click();
   cy.contains("Johan Johansson").should("not.exist");
