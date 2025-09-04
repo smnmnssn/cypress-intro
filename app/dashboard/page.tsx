@@ -10,7 +10,7 @@ export default async function DashboardPage() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("auth")?.value;
 
-  if (!userId) {
+  /*if (!userId) {
     redirect("/login");
   }
 
@@ -20,11 +20,11 @@ export default async function DashboardPage() {
 
   if (!user) {
     redirect("/login");
-  }
+  } */
 
   return (
     <main className="p-6">
-      <h1 className="text-6xl font-semibold mb-4">Välkommen, {user.email}!</h1>
+      <h1 className="text-6xl font-semibold mb-4">Välkommen, !</h1>
       <LogoutButton />
       <ClientList />
       <PropertyList />
