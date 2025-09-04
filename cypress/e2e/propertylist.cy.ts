@@ -16,10 +16,14 @@ describe("Fastighetslista, CRUD.", () => {
   it("ska kunna skapa nytt fastighetsobjekt", () => {
     cy.visit("/properties");
     cy.get('[data-cy="create-new-button"]').click();
-    cy.get('[data-cy="input-adress"]').type("Testvägen 1");
-    cy.get('[data-cy="input-pris"]').type("4900000");
-    cy.get('[data-cy="input-status"]').type("Såld");
-    cy.get('[data-cy="submit-button"]').click();
+
+    cy.get('[data-cy="property-create-form"]').within(() => {
+      cy.get('[data-cy="input-adress"]').type("Testvägen 1");
+      cy.get('[data-cy="input-pris"]').type("4900000");
+      cy.get('[data-cy="input-status"]').type("Såld");
+      cy.get('[data-cy="submit-button"]').click();
+    });
+
     cy.contains("Testvägen 1");
   });
 
@@ -38,7 +42,7 @@ describe("Fastighetslista, CRUD.", () => {
       .first()
       .within(() => {
         cy.contains("Testvägen 2");
-        cy.contains("5 900 000");
+        cy.contains("5900000");
         cy.contains("Ej såld");
       });
   });
@@ -47,10 +51,12 @@ describe("Fastighetslista, CRUD.", () => {
   it("ska kunna radera ett objekt", () => {
     cy.visit("/properties");
     cy.get('[data-cy="create-new-button"]').click();
-    cy.get('[data-cy="input-adress"]').type("Testvägen 3");
-    cy.get('[data-cy="input-pris"]').type("6100000");
-    cy.get('[data-cy="input-status"]').type("Såld");
-    cy.get('[data-cy="submit-button"]').click();
+    cy.get('[data-cy="property-create-form"]').within(() => {
+      cy.get('[data-cy="input-adress"]').type("Testvägen 3");
+      cy.get('[data-cy="input-pris"]').type("6100000");
+      cy.get('[data-cy="input-status"]').type("Såld");
+      cy.get('[data-cy="submit-button"]').click();
+    });
     cy.contains("Testvägen 3")
       .parent()
       .find('[data-cy="delete-button"]')
@@ -68,7 +74,7 @@ describe("Fastighetslista, CRUD.", () => {
     cy.get('[data-cy="submit-button"]').click();
     cy.get('[data-cy="error-message"]').should(
       "contain.text",
-      "Invalid input: expected number, received NaN"
+      "Pris är obligatoriskt"
     );
   });
 });
