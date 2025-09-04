@@ -1,8 +1,10 @@
 import { db } from "../db";
-import { seedTodos } from "./todo";
+import { seedClients } from "./clients";
+import { seedProperties } from "./properties";
 
 async function main() {
-  await seedTodos();
+  await seedClients();
+  await seedProperties();
 }
 
 main()

@@ -50,10 +50,10 @@ it("ska kunna redigera kund", () => {
 it("ska kunna radera kund", () => {
   cy.visit("/clients");
   cy.get("#create-new-button").click();
-  cy.get("input[name=name]").clear().type("Johan Johansson");
+  cy.get("input[name=name]").clear().type("Klas Klasson");
   cy.get("input[name=email]").clear().type("johan@test.se");
   cy.get("input[name=address]").clear().type("Test Gatan 1");
   cy.get("button[type=submit]").click();
-  cy.contains("Johan Johansson").parent().find("#delete-button").click();
-  cy.contains("Johan Johansson").should("not.exist");
+  cy.contains("Klas Klasson").parent().find("#delete-button").click();
+  cy.contains("Klas Klasson").should("not.exist");
 });
