@@ -1,12 +1,34 @@
-# NextJS + Cypress boilerplate
+# Fastighets- och kundhanteringsapp  
+Detta projekt är en fullstackapplikation byggd med **Next.js**, **TypeScript**, **Prisma** och **MongoDB** som hanterar autentisering samt CRUD-funktionalitet för kunder och fastigheter. Backend är implementerat via Next.js API routes kopplat till Prisma och frontend består av återanvändbara komponenter som listar, skapar, uppdaterar och raderar data. Användarautentisering sker med registrering, inloggning och utloggning där lösenord krypteras med bcrypt och cookies används för sessionshantering.  
 
-## Kom igång
+Applikationen testas med **Cypress E2E** där automatiserade tester täcker användarflöden för registrering, login, logout, CRUD på kunder och fastigheter samt validering av felaktiga inmatningar. Testerna körs mot en separat **testdatabas** som seedas om inför varje körning via `cy.task("reseed")`.  
 
-1. Lägg till atlas url till din databas i `.env` filen
-2. Kör `npm install` för att installera dependencies
-3. Publicera databasen med `npm run push`
-4. Seeda sedan databasen med `npm run seed`
-5. Starta utvecklingsservern med `npm run dev`
-6. Öppna en ny terminal och kör `npm test`
+Projektet versioneras med **Git & GitHub** och innehåller en README.md med instruktioner för installation, körning och testning.  
 
-Nu borde du vara reda att skriva nya tester och bygga ut din app.
+## Installation and Running the Project
+
+### **1. Clone the Repository**
+```sh
+git clone https://github.com/smnmnssn/cypress-intro
+cd cypress-intro
+```
+### **2. Install dependencies**
+```sh
+npm install
+```
+
+#### Start the Development Server:
+```sh
+npm run dev
+```
+#### Build for Production:
+```sh
+npm run build
+npm run preview
+```
+
+#### Run automated tests:
+```sh
+npm test
+```
+
