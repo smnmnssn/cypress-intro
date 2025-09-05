@@ -10,18 +10,18 @@ type PropertyFormProps = {
   onSubmit: (payload: PropertyCreateInput) => Promise<void> | void;
   onCancel?: () => void;
   showCancel?: boolean;
-  initial?: Partial<PropertyCreateInput>;
+  initialData?: Partial<PropertyCreateInput>; // ändrat från "initial"
 };
 
 export default function PropertyForm({
   onSubmit,
   onCancel,
   showCancel = true,
-  initial = {},
+  initialData = {},
 }: PropertyFormProps) {
-  const [address, setAddress] = useState(initial.address ?? "");
-  const [price, setPrice] = useState(initial.price?.toString() ?? "");
-  const [status, setStatus] = useState(initial.status ?? "");
+  const [address, setAddress] = useState(initialData.address ?? "");
+  const [price, setPrice] = useState(initialData.price?.toString() ?? "");
+  const [status, setStatus] = useState(initialData.status ?? "");
   const [errors, setErrors] = useState<string[]>([]);
   const [pending, setPending] = useState(false);
 
@@ -32,14 +32,15 @@ export default function PropertyForm({
     try {
       const data = propertySchema.parse({
         address,
-        price,
+        price: Number(price),
         status,
       });
 
       setPending(true);
       await onSubmit(data);
 
-      if (!initial.address) {
+      // Rensa endast om vi är i "create mode"
+      if (!initialData.address) {
         setAddress("");
         setPrice("");
         setStatus("");

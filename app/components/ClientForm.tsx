@@ -10,18 +10,18 @@ type ClientFormProps = {
   onSubmit: (payload: ClientCreateInput) => Promise<void> | void;
   onCancel?: () => void;
   showCancel?: boolean;
-  initial?: Partial<ClientCreateInput>;
+  initialData?: Partial<ClientCreateInput>;
 };
 
 export default function ClientForm({
   onSubmit,
   onCancel,
   showCancel = true,
-  initial = {},
+  initialData = {},
 }: ClientFormProps) {
-  const [name, setName] = useState(initial.name ?? "");
-  const [email, setEmail] = useState(initial.email ?? "");
-  const [address, setAddress] = useState(initial.address ?? "");
+  const [name, setName] = useState(initialData.name ?? "");
+  const [email, setEmail] = useState(initialData.email ?? "");
+  const [address, setAddress] = useState(initialData.address ?? "");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 

@@ -23,7 +23,6 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
 
   return (
     <div
-      role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
       className="fixed inset-0 flex items-center justify-center"
