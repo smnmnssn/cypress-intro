@@ -28,24 +28,26 @@ export async function POST(req: Request) {
     const parsed = clientSchema.safeParse(body);
 
     if (!parsed.success) {
+      console.error("Valideringsfel:", parsed.error.format());
       return NextResponse.json(
         { error: parsed.error.flatten().fieldErrors },
         { status: 400 }
       );
     }
 
-    const { name, email } = parsed.data;
+    const { name, email, address } = parsed.data;
+
     const newClient = await db.client.create({
-      data: { name, email },
+      data: { name, email, address },
     });
 
     return NextResponse.json(newClient, { status: 201 });
   } catch (error) {
-    console.error("Skapa kund error", error);
-
+    console.error("Skapa kund error:", error);
     return NextResponse.json(
       { error: "Kunde inte skapa kund" },
       { status: 500 }
     );
   }
 }
+
