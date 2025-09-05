@@ -1,12 +1,18 @@
-// components/clients/ClientList.tsx
 "use client";
 
+import { createClient, getClients } from "@/app/clients/actions";
 import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import ClientForm, { ClientCreateInput } from "./ClientForm";
-import ClientRow from "./ClientRow";
 import Modal from "./Modal";
-import { getClients, createClient } from "@/app/clients/actions"; 
 
 export type Client = {
   id: string;
@@ -18,8 +24,8 @@ export type Client = {
 export default function ClientList() {
   const [clients, setClients] = useState<Client[]>([]);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingClient, setEditingClient] = useState<Client | null>(null);
 
-  // 👇 hämta klienter via action
   useEffect(() => {
     async function loadClients() {
       try {
@@ -32,7 +38,6 @@ export default function ClientList() {
     loadClients();
   }, []);
 
-  // 👇 skapa ny klient via action
   async function handleCreate(payload: ClientCreateInput) {
     try {
       const created = await createClient(payload);
@@ -40,43 +45,76 @@ export default function ClientList() {
       setIsCreateOpen(false);
     } catch (error) {
       console.error("Kunde inte skapa klient:", error);
-      throw error; // låt formuläret fånga och visa felet
+      throw error;
     }
   }
 
   function handleUpdate(updated: Client) {
     setClients((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
+    setEditingClient(null);
   }
 
   function handleDelete(id: string) {
-    setClients((prev) => prev.filter((cc) => cc.id !== id));
+    setClients((prev) => prev.filter((c) => c.id !== id));
   }
 
   return (
-    <div>
-      <h1 data-cy="clients-title" className="text-6xl">
-        Kunder
-      </h1>
-
+    <div className="p-4">
+      <header className="mb-4">
+        <h1 data-cy="clients-title" className="text-2xl font-bold">
+          Kundhantering
+        </h1>
+        <p className="text-gray-600">Hantera, skapa och uppdatera kunder</p>
+      </header>
       <Button
         id="create-new-button"
         onClick={() => setIsCreateOpen(true)}
-        className="border px-3 py-2 mt-5 font-bold bg-green-600"
+        className="border px-3 py-2 mt-5 bg-green-400"
       >
-        + Skapa ny
+        + Skapa ny kund
       </Button>
 
-      <ol id="client-list" className="mt-4 mb-5 font-bold">
-        {clients.map((client) => (
-          <ClientRow
-            key={client.id}
-            client={client}
-            onUpdate={handleUpdate}
-            onDelete={handleDelete}
-          />
-        ))}
-      </ol>
+      {/* Tabell med kunder */}
+      <Table className="mt-6">
+        <TableHeader>
+          <TableRow>
+            <TableHead>Namn</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Adress</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody id="client-list">
+          {clients.map((client) => (
+            <TableRow key={client.id}>
+              <TableCell className="font-medium">{client.name}</TableCell>
+              <TableCell>{client.email}</TableCell>
+              <TableCell>{client.address}</TableCell>
+              <TableCell className="space-x-2">
+                <Button
+                  id="edit-button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditingClient(client)}
+                >
+                  Redigera
+                </Button>
+                <Button
+                  id="delete-button"
+                  variant="outline"
+                  size="sm"
+                  className="bg-red-400"
+                  onClick={() => handleDelete(client.id)}
+                >
+                  Ta bort
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
+      {/* Skapa ny kund */}
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
@@ -87,6 +125,23 @@ export default function ClientList() {
           onCancel={() => setIsCreateOpen(false)}
         />
       </Modal>
+
+      {/* Redigera kund */}
+      {editingClient && (
+        <Modal
+          isOpen={true}
+          onClose={() => setEditingClient(null)}
+          title="Redigera kund"
+        >
+          <ClientForm
+            initialData={editingClient}
+            onSubmit={(payload) =>
+              handleUpdate({ ...payload, id: editingClient!.id })
+            }
+            onCancel={() => setEditingClient(null)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

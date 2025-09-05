@@ -14,7 +14,7 @@ export default function PropertiesPage() {
 function PropertiesHeader() {
   return (
     <header className="mb-4">
-      <h1 className="text-2xl font-bold">Fastighetshantering</h1>
+      <h1 data-cy="property-title" className="text-2xl font-bold">Fastighetshantering</h1>
       <p className="text-gray-600">Hantera, skapa och uppdatera fastigheter</p>
     </header>
   );
