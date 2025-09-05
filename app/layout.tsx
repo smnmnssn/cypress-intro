@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Realtor app w/ cypress test",
+  title: "Mäklar-appen",
 };
 
 export default function RootLayout({
