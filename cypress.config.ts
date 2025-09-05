@@ -10,6 +10,7 @@ export default defineConfig({
         async reseed() {
           await db.user.deleteMany();
           await db.property.deleteMany();
+          await db.client.deleteMany();
 
           const hashedPassword = await bcrypt.hash("hemligt", 10);
           await db.user.create({
@@ -25,6 +26,21 @@ export default defineConfig({
               price: 2500000,
               status: "Till salu",
             },
+          });
+
+          await db.client.createMany({
+            data: [
+              {
+                name: "Lisa Larsson",
+                email: "lisa@example.com",
+                address: "Villagatan 12",
+              },
+              {
+                name: "Anders Nilsson",
+                email: "anders@example.com",
+                address: "Parkvägen 3",
+              },
+            ],
           });
 
           return null;
