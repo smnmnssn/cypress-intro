@@ -67,7 +67,7 @@ export default function ClientList() {
         <p className="text-gray-600">Hantera, skapa och uppdatera kunder</p>
       </header>
       <Button
-        id="create-new-button"
+        data-cy="create-new-button"
         onClick={() => setIsCreateOpen(true)}
         className="border px-3 py-2 mt-5 bg-green-400"
       >
@@ -83,7 +83,7 @@ export default function ClientList() {
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody id="client-list">
+        <TableBody data-cy="client-list">
           {clients.map((client) => (
             <TableRow key={client.id}>
               <TableCell className="font-medium">{client.name}</TableCell>
@@ -91,7 +91,7 @@ export default function ClientList() {
               <TableCell>{client.address}</TableCell>
               <TableCell className="space-x-2">
                 <Button
-                  id="edit-button"
+                  data-cy="edit-button"
                   variant="outline"
                   size="sm"
                   onClick={() => setEditingClient(client)}
@@ -99,7 +99,7 @@ export default function ClientList() {
                   Redigera
                 </Button>
                 <Button
-                  id="delete-button"
+                  data-cy="delete-button"
                   variant="outline"
                   size="sm"
                   className="bg-red-400"

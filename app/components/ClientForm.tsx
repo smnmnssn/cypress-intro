@@ -55,7 +55,7 @@ export default function ClientForm({
         <label>
           Namn
           <input
-            name="name"
+            data-cy="input-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="border p-2 w-full"
@@ -64,7 +64,7 @@ export default function ClientForm({
         <label>
           E-post
           <input
-            name="email"
+            data-cy="input-email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="border p-2 w-full"
@@ -73,7 +73,8 @@ export default function ClientForm({
         <label>
           Adress
           <input
-            name="address"
+                  data-cy="input-address"
+
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="border p-2 w-full"
@@ -87,7 +88,7 @@ export default function ClientForm({
         )}
 
         <div className="flex gap-2 mt-2">
-          <button type="submit" disabled={pending} className="border px-3 py-2">
+          <button data-cy="submit-button" disabled={pending} className="border px-3 py-2">
             {pending ? "Sparar..." : "Spara"}
           </button>
           {showCancel && onCancel && (
