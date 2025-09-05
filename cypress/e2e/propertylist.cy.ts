@@ -6,7 +6,10 @@ describe("Fastighetslista, CRUD.", () => {
   // Render list
   it("ska visa fastighetslistan", () => {
     cy.visit("/properties");
-    cy.get('[data-cy="property-title"]').should("contain.text", "Fastigheter");
+    cy.get('[data-cy="property-title"]').should(
+      "contain.text",
+      "Fastighetshantering"
+    );
     cy.get('[data-cy="property-list"]').should("exist");
     cy.get('[data-cy="create-new-button"]').should("exist");
     cy.contains("Testgatan 1");

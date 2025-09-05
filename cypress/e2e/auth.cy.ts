@@ -23,8 +23,6 @@ describe("Registrering, login och logout", () => {
     cy.get("[data-cy=password-input]").type(userInfo.password);
     cy.get("[data-cy=confirm-password-input]").type(userInfo.password);
     cy.get("[data-cy=submit-button]").click();
-
-    // Check that we go to dashboard after registering.
     cy.url().should("include", "/dashboard");
     cy.contains("Välkommen, testuser@example.com!").should("be.visible");
   });
@@ -36,8 +34,6 @@ describe("Registrering, login och logout", () => {
     cy.get("[data-cy=email-input]").type("maklare@example.com");
     cy.get("[data-cy=password-input]").type("hemligt");
     cy.get("[data-cy=submit-button]").click();
-
-    // Check that we go to dashboard after login.
     cy.url().should("include", "/dashboard");
     cy.contains("Välkommen, maklare@example.com!").should("be.visible");
   });
@@ -48,22 +44,17 @@ describe("Registrering, login och logout", () => {
     cy.get("[data-cy=email-input]").type("maklare@example.com");
     cy.get("[data-cy=password-input]").type("hemligt");
     cy.get("[data-cy=submit-button]").click();
-
     cy.url().should("include", "/dashboard");
-
     cy.get("[data-cy=logout]").click();
-
     cy.url().should("include", "/login");
   });
 
   // Error message when using wrong pw or email.
   it("ska visa felmeddelande vid fel lösenord eller e-post", () => {
     cy.visit("/login");
-
     cy.get("[data-cy=email-input]").type("maklare@example.com");
     cy.get("[data-cy=password-input]").type("fel_losen");
     cy.get("[data-cy=submit-button]").click();
-
     cy.contains("Fel e-post eller lösenord").should("be.visible");
   });
 });
