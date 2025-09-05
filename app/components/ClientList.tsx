@@ -74,7 +74,6 @@ export default function ClientList() {
         + Skapa ny kund
       </Button>
 
-      {/* Tabell med kunder */}
       <Table className="mt-6">
         <TableHeader>
           <TableRow>
@@ -114,7 +113,6 @@ export default function ClientList() {
         </TableBody>
       </Table>
 
-      {/* Skapa ny kund */}
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
@@ -126,7 +124,6 @@ export default function ClientList() {
         />
       </Modal>
 
-      {/* Redigera kund */}
       {editingClient && (
         <Modal
           isOpen={true}

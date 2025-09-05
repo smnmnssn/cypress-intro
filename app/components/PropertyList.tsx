@@ -70,7 +70,6 @@ export default function PropertyList() {
         + Skapa ny fastighet
       </Button>
 
-      {/* Tabell med fastigheter */}
       <Table className="mt-6">
         <TableHeader>
           <TableRow>
@@ -110,7 +109,6 @@ export default function PropertyList() {
         </TableBody>
       </Table>
 
-      {/* Skapa ny fastighet */}
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
@@ -122,7 +120,6 @@ export default function PropertyList() {
         />
       </Modal>
 
-      {/* Redigera fastighet */}
       {editingProperty && (
         <Modal
           isOpen={true}

@@ -10,7 +10,7 @@ type PropertyFormProps = {
   onSubmit: (payload: PropertyCreateInput) => Promise<void> | void;
   onCancel?: () => void;
   showCancel?: boolean;
-  initialData?: Partial<PropertyCreateInput>; // ändrat från "initial"
+  initialData?: Partial<PropertyCreateInput>; 
 };
 
 export default function PropertyForm({
@@ -39,7 +39,6 @@ export default function PropertyForm({
       setPending(true);
       await onSubmit(data);
 
-      // Rensa endast om vi är i "create mode"
       if (!initialData.address) {
         setAddress("");
         setPrice("");
