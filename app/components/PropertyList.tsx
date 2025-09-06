@@ -10,6 +10,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@radix-ui/react-accordion";
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import PropertyForm, { PropertyCreateInput } from "./PropertyForm";
@@ -70,7 +76,7 @@ export default function PropertyList() {
         + Skapa ny fastighet
       </Button>
 
-      <Table className="mt-6">
+      <Table className="mt-6 w-full table-fixed">
         <TableHeader>
           <TableRow>
             <TableHead>Adress</TableHead>
@@ -79,36 +85,81 @@ export default function PropertyList() {
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody data-cy="property-list">
-          {properties.map((property) => (
-            <TableRow data-cy="property-item" key={property.id}>
-              <TableCell className="font-medium">{property.address}</TableCell>
-              <TableCell>{property.price}</TableCell>
-              <TableCell>{property.status}</TableCell>
-              <TableCell className="space-x-2">
-                <Button
-                  data-cy="edit-button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setEditingProperty(property)}
-                >
-                  Redigera
-                </Button>
-                <Button
-                  data-cy="delete-button"
-                  className="bg-red-400 "
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleDelete(property.id)}
-                >
-                  Ta bort
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+
+        <Accordion type="single" collapsible asChild>
+          <TableBody data-cy="property-list">
+            {properties.map((property) => (
+              <AccordionItem key={property.id} value={property.id.toString()}>
+                <AccordionTrigger asChild>
+                  <TableRow
+                    data-cy="property-item"
+                    className="cursor-pointer hover:bg-gray-100 w-full"
+                  >
+                    <TableCell className=" font-medium">
+                      {property.address}
+                    </TableCell>
+                    <TableCell className="">{property.price}</TableCell>
+                    <TableCell className="">{property.status}</TableCell>
+                    <TableCell className=" space-x-2">
+                      <Button
+                        data-cy="edit-button"
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingProperty(property);
+                        }}
+                      >
+                        Redigera
+                      </Button>
+                      <Button
+                        data-cy="delete-button"
+                        className="bg-red-400"
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(property.id);
+                        }}
+                      >
+                        Ta bort
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </AccordionTrigger>
+
+                <AccordionContent asChild>
+                  <TableRow>
+                    <TableCell colSpan={4} className="bg-gray-50 p-4">
+                      <div className="flex gap-4">
+                        <img
+                          /* src={property.imageUrl} */
+                          alt={property.address}
+                          className="w-32 h-24 object-cover rounded"
+                        />
+                        <div>
+                          <p>
+                            <strong>Beskrivning:</strong>{" "}
+                            {/* {property.description} */}
+                          </p>
+                          <p>
+                            <strong>Rum:</strong> {/* {property.rooms} */}
+                          </p>
+                          <p>
+                            <strong>Byggår:</strong> {/* {property.year} */}
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </TableBody>
+        </Accordion>
       </Table>
 
+      {/* Modal för skapa */}
       <Modal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
@@ -120,6 +171,7 @@ export default function PropertyList() {
         />
       </Modal>
 
+      {/* Modal för redigera */}
       {editingProperty && (
         <Modal
           isOpen={true}

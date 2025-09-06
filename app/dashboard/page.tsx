@@ -9,7 +9,7 @@ export default async function DashboardPage() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("auth")?.value;
 
-  if (!userId) {
+/*   if (!userId) {
     redirect("/login");
   }
 
@@ -19,7 +19,7 @@ export default async function DashboardPage() {
 
   if (!user) {
     redirect("/login");
-  }
+  } */
 
   return (
     <main className="flex flex-col items-center p-6">
@@ -30,7 +30,7 @@ export default async function DashboardPage() {
 
       {/* Welcome centered */}
       <h1 className="text-6xl font-semibold text-center mb-12">
-        {<p>Välkommen, {user.email}!</p>}{" "}
+        {/* {<p>Välkommen, {user.email}!</p>}{" "} */}
       </h1>
 
       {/* Cards container */}
