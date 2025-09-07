@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import PropertyForm, { PropertyCreateInput } from "./PropertyForm";
 import PropertyModal from "./PropertyModal";
+import { property } from "zod";
 
 export type Property = {
   id: string;
@@ -93,50 +94,47 @@ export default function PropertyList() {
 
         <TableBody data-cy="property-list">
           {properties.map((property) => (
-            <>
-              <TableRow
-                data-cy="property-item"
-                className="cursor-pointer hover:bg-gray-100 w-full"
-                /* onClick="onRowClick" ÖPPNAR MODAL*/
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedProperty(property);
-                  setIsPropertyOpen(true);
-                }}
-              >
-                <TableCell className=" font-medium">
-                  {property.address}
-                </TableCell>
-                <TableCell className="">{property.price}</TableCell>
-                <TableCell className="">{property.status}</TableCell>
-                <TableCell className=" space-x-2">
-                  <Button
-                    data-cy="edit-button"
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEditingProperty(property);
-                    }}
-                  >
-                    Redigera
-                  </Button>
-                  <Button
-                    data-cy="delete-button"
-                    className="bg-red-400"
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(property.id);
-                    }}
-                  >
-                    Ta bort
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </>
-          ))}
+  <TableRow
+    key={property.id} // <-- Viktigt: unikt key per fastighet
+    data-cy="property-item"
+    className="cursor-pointer hover:bg-gray-100 w-full"
+    onClick={(e) => {
+      e.stopPropagation();
+      setSelectedProperty(property);
+      setIsPropertyOpen(true);
+    }}
+  >
+    <TableCell className="font-medium">{property.address}</TableCell>
+    <TableCell>{property.price}</TableCell>
+    <TableCell>{property.status}</TableCell>
+    <TableCell className="space-x-2">
+      <Button
+        data-cy="edit-button"
+        variant="outline"
+        size="sm"
+        onClick={(e) => {
+          e.stopPropagation();
+          setEditingProperty(property);
+        }}
+      >
+        Redigera
+      </Button>
+      <Button
+        data-cy="delete-button"
+        className="bg-red-400"
+        variant="outline"
+        size="sm"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDelete(property.id);
+        }}
+      >
+        Ta bort
+      </Button>
+    </TableCell>
+  </TableRow>
+))}
+
         </TableBody>
       </Table>
 
