@@ -1,5 +1,5 @@
-import type { ClientCreateInput } from "../components/ClientForm";
-import type { Client } from "../components/ClientList";
+import type { ClientCreateInput } from "../components/Clients/ClientForm";
+import type { Client } from "../components/Clients/ClientList";
 
 // Fetch all clientts
 export async function getClients(): Promise<Client[]> {
@@ -13,7 +13,9 @@ export async function getClients(): Promise<Client[]> {
 }
 
 // Create new client
-export async function createClient(payload: ClientCreateInput): Promise<Client> {
+export async function createClient(
+  payload: ClientCreateInput
+): Promise<Client> {
   const res = await fetch("/api/clients", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

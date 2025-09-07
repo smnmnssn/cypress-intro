@@ -1,4 +1,4 @@
-import PropertiesPage from "../components/PropertiesPage"
+import PropertiesPage from "../components/Properties/PropertiesPage";
 
 export default function Page() {
   return <PropertiesPage />;

@@ -1,5 +1,5 @@
-import type { PropertyCreateInput } from "../components/PropertyForm";
-import type { Property } from "../components/PropertyList";
+import type { PropertyCreateInput } from "../components/Properties/PropertyForm";
+import type { Property } from "../components/Properties/PropertyList";
 
 // Fetch all properties/objects
 export async function getProperties(): Promise<Property[]> {
@@ -13,7 +13,9 @@ export async function getProperties(): Promise<Property[]> {
 }
 
 // Create new property/object
-export async function createProperty(payload: PropertyCreateInput): Promise<Property> {
+export async function createProperty(
+  payload: PropertyCreateInput
+): Promise<Property> {
   const res = await fetch("/api/properties", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -29,7 +31,10 @@ export async function createProperty(payload: PropertyCreateInput): Promise<Prop
 }
 
 // Update property/object
-export async function updateProperty(id: string, payload: PropertyCreateInput): Promise<Property> {
+export async function updateProperty(
+  id: string,
+  payload: PropertyCreateInput
+): Promise<Property> {
   const res = await fetch(`/api/properties/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

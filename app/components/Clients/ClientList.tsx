@@ -11,8 +11,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
+import Modal from "../Modal";
 import ClientForm, { ClientCreateInput } from "./ClientForm";
-import Modal from "./Modal";
 
 export type Client = {
   id: string;

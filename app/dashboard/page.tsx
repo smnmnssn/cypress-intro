@@ -3,7 +3,7 @@ import { db } from "@/prisma/db";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import LogoutButton from "../components/LogoutButton";
+import LogoutButton from "../components/Auth/LogoutButton";
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();

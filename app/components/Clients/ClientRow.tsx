@@ -1,9 +1,9 @@
+import { deleteClient, updateClient } from "@/app/clients/actions";
 import { clientSchema } from "@/lib/validation/schemas";
 import { useState } from "react";
 import { z } from "zod";
 import type { ClientCreateInput } from "./ClientForm";
 import type { Client } from "./ClientList";
-import { updateClient, deleteClient } from "@/app/clients/actions"; 
 
 type ClientRowProps = {
   client: Client;
@@ -11,7 +11,11 @@ type ClientRowProps = {
   onDelete?: (id: string) => void;
 };
 
-export default function ClientRow({ client, onUpdate, onDelete }: ClientRowProps) {
+export default function ClientRow({
+  client,
+  onUpdate,
+  onDelete,
+}: ClientRowProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(client.name);
   const [email, setEmail] = useState(client.email);
