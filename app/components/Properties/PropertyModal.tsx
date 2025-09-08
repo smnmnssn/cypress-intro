@@ -26,7 +26,7 @@ export default function PropertyModal({
   const [activeImage, setActiveImage] = useState(testImages[0]);
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Fastighetsdetaljer">
-      <div className="flex flex-col md:flex-row gap-6 p-4">
+      <div className="flex flex-col md:flex-row gap-6 p-4 z-50">
         {/* Vänster sektion: här ska bildgalleri in i nästa steg */}
         <div className="flex-1 border rounded-lg p-4 bg-gray-50 w-[800px]">
           <div className="flex">

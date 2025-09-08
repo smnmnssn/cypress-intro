@@ -69,7 +69,7 @@ export default function ClientList() {
       <Button
         data-cy="create-new-button"
         onClick={() => setIsCreateOpen(true)}
-        className="border px-3 py-2 mt-5 bg-green-400"
+        className=" px-3 py-2 mt-5 bg-green-400 hover:bg-green-300 cursor-pointer"
       >
         + Skapa ny kund
       </Button>
@@ -91,22 +91,27 @@ export default function ClientList() {
               <TableCell>{client.address}</TableCell>
               <TableCell className="space-x-2">
                 <Button
-                  data-cy="edit-button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setEditingClient(client)}
-                >
-                  Redigera
-                </Button>
-                <Button
-                  data-cy="delete-button"
-                  variant="outline"
-                  size="sm"
-                  className="bg-red-400"
-                  onClick={() => handleDelete(client.id)}
-                >
-                  Ta bort
-                </Button>
+        data-cy="edit-button"
+        size="sm"
+        variant="edit"
+        onClick={(e) => {
+          e.stopPropagation();
+          setEditingClient(client);
+        }}
+      >
+        Redigera
+      </Button>
+      <Button
+        data-cy="delete-button"
+        size="sm"
+        variant="delete"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDelete(client.id);
+        }}
+      >
+        Ta bort
+      </Button>
               </TableCell>
             </TableRow>
           ))}

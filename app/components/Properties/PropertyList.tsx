@@ -78,8 +78,9 @@ export default function PropertyList() {
     <div>
       <Button
         data-cy="create-new-button"
+        variant="create"
         onClick={() => setIsCreateOpen(true)}
-        className="border px-3 py-2 mt-5 bg-green-400"
+        
       >
         + Skapa ny fastighet
       </Button>
@@ -112,7 +113,7 @@ export default function PropertyList() {
     <TableCell className="space-x-2">
       <Button
         data-cy="edit-button"
-        variant="outline"
+        variant="edit"
         size="sm"
         onClick={(e) => {
           e.stopPropagation();
@@ -123,8 +124,7 @@ export default function PropertyList() {
       </Button>
       <Button
         data-cy="delete-button"
-        className="bg-red-400"
-        variant="outline"
+        variant="delete"
         size="sm"
         onClick={(e) => {
           e.stopPropagation();
