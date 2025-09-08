@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import PropertyForm, { PropertyCreateInput } from "./PropertyForm";
 import PropertyModal from "./PropertyModal";
-import { property } from "zod";
 
 export type Property = {
   id: string;
@@ -47,7 +46,10 @@ export default function PropertyList() {
   async function handlePropertyModal() {
     try {
       setIsPropertyOpen(true);
-    } catch (error) {}
+    } catch (error) {
+
+      
+    }
   }
 
   async function handleCreate(payload: PropertyCreateInput) {

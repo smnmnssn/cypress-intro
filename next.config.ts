@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     root: path.join(__dirname, ".."),
   },
   images: {
-    domains: ["loremflickr.com", "picsum.photos", "placekitten.com"],
+    domains: ["loremflickr.com", "picsum.photos", "placekitten.com", "tse1.mm.bing.net", "tse2.mm.bing.net"],
   },
 };
 

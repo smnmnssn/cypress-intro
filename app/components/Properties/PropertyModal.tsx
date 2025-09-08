@@ -1,5 +1,6 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import { useState } from "react";
 import Modal from "../Modal";
@@ -11,10 +12,10 @@ type PropertyModalProps = {
 };
 
 const testImages = [
-  "https://loremflickr.com/800/600/house?lock=1", // Main
-  "https://loremflickr.com/200/200/house?lock=2", // Thumb
-  "https://loremflickr.com/200/200/interior?lock=3", // Thumb
-  "https://loremflickr.com/200/200/garden?lock=4", // Thumb
+  "https://tse1.mm.bing.net/th/id/OIP.IVH4KKWvbTV8QKYIcvL5GAHaF3?pid=Api",
+  "https://tse1.mm.bing.net/th/id/OIP.LYraXmfKndDoGf6luqBrQgHaHa?pid=Api",
+  "https://tse2.mm.bing.net/th/id/OIP.dVKlZcmwVuYpozpELwvgdAHaIZ?pid=Api",
+  "https://tse2.mm.bing.net/th/id/OIP.lC7EV_qSI_aiJb-HrjoL6AHaHa?pid=Api",
 ];
 
 export default function PropertyModal({
@@ -22,12 +23,12 @@ export default function PropertyModal({
   isOpen,
   onClose,
 }: PropertyModalProps) {
-  const [activeImage, setActiveImage] = useState("testImages[0]");
+  const [activeImage, setActiveImage] = useState(testImages[0]);
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Fastighetsdetaljer">
       <div className="flex flex-col md:flex-row gap-6 p-4">
         {/* Vänster sektion: här ska bildgalleri in i nästa steg */}
-        <div className="flex-1 border rounded-lg p-4 bg-gray-50">
+        <div className="flex-1 border rounded-lg p-4 bg-gray-50 w-[800px]">
           <div className="flex">
             {/* Main image */}
             <div className="flex-1">
@@ -42,14 +43,20 @@ export default function PropertyModal({
 
             {/* Thumbnails */}
             <div className="flex flex-col gap-2 ml-4">
-              {testImages.slice(1).map((img, index) => (
+              {testImages.map((img, index) => (
                 <Image
                   key={index}
                   src={img}
                   alt={`Thumbnail ${index}`}
                   width={100}
                   height={100}
-                  className="w-20 h-20 object-cover rounded cursor-pointer border hover:border-blue-500"
+                  className={`w-20 h-20 object-cover rounded cursor-pointer border 
+        ${
+          activeImage === img
+            ? "p-1 border-2 border-black"
+            : "border-transparent"
+        } 
+        hover:border-blue-500`}
                   onClick={() => setActiveImage(img)}
                 />
               ))}
@@ -73,6 +80,13 @@ export default function PropertyModal({
             <li>Storlek: ? kvm</li>
             <li>Byggår: ?</li>
           </ul>
+
+          <div className="flex flex-col gap-2 mt-5">
+            <Checkbox />
+            <Checkbox />
+            <Checkbox />
+            <Checkbox />
+          </div>
         </div>
       </div>
     </Modal>

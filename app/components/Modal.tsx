@@ -25,7 +25,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
     <div
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 flex items-center justify-center"
+      className="fixed inset-0 flex items-center justify-center w-full"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
