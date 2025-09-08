@@ -1,6 +1,7 @@
 "use client";
 
 import { loginUser } from "@/app/login/actions";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -48,7 +49,12 @@ export default function LoginForm() {
         required
       />
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertTitle className="text-red-500 text-sm">{error}</AlertTitle>
+        </Alert>
+      )}
 
       <button
         type="submit"

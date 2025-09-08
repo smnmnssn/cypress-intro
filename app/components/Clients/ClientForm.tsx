@@ -1,8 +1,10 @@
 "use client";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { clientSchema } from "@/lib/validation/schemas";
+import { AlertCircleIcon } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
-import { clientSchema } from "@/lib/validation/schemas";
 
 export type ClientCreateInput = z.infer<typeof clientSchema>;
 
@@ -73,8 +75,7 @@ export default function ClientForm({
         <label>
           Adress
           <input
-                  data-cy="input-address"
-
+            data-cy="input-address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="border p-2 w-full"
@@ -82,13 +83,22 @@ export default function ClientForm({
         </label>
 
         {error && (
-          <p className="text-red-600" data-cy="client-create-error">
-            {error}
-          </p>
+          <Alert variant="destructive">
+            <AlertCircleIcon />
+            <AlertTitle>Något gick fel.</AlertTitle>
+            <AlertDescription>
+              <p className="text-red-600" data-cy="client-create-error">
+                {error}
+              </p>
+            </AlertDescription>
+          </Alert>
         )}
-
         <div className="flex gap-2 mt-2">
-          <button data-cy="submit-button" disabled={pending} className="border px-3 py-2">
+          <button
+            data-cy="submit-button"
+            disabled={pending}
+            className="border px-3 py-2"
+          >
             {pending ? "Sparar..." : "Spara"}
           </button>
           {showCancel && onCancel && (
